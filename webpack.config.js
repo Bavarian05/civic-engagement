@@ -16,7 +16,16 @@ module.exports = {
         include: APP_DIR,
         exclude: /node_modules/,
         loader: 'babel-loader'
+      },
+      {
+        test: /\.(sass|scss)$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
       }
     ]
-  }
+  },
+  devtool: 'source-map'
 };
