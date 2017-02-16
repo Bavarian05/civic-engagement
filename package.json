@@ -39,7 +39,8 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "node-sass": "^4.5.0",
     "sass-loader": "^6.0.0",
-    "style-loader": "^0.13.1"
+    "style-loader": "^0.13.1",
+    "webpack-hot-middleware": "^2.17.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
