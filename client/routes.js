@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, IndexRoute, Link } from 'react-router';
-// import Axios from 'axios';
 import LocationBar from './components/news/locationBar';
 import MenuContainer from './containers/sidebarContainer';
 import MapContainer from './components/events/eventsMap';
@@ -40,27 +39,19 @@ const home = function home() {
   </div>);
 };
 
-// const testing = function testing() {
-//   return (<div>
-//     <h1>Testing</h1>
-//     <Link to="/header">Header</Link>
-//   </div>);
-// };
-
 export default (
   <Route path="/" >
     <IndexRoute component={HomePage} />
+    <Route path="events" component={Events} />
+    <Route path="menuAnd" component={MenuContainer} />
+    <Route path="top20" component={Top20} />
+    <Route path="congress" component={CongressContainer} />
+    <Route path="login" component={Login} />
     <Route path="location" component={LocationBar} />
     <Route path="map" component={MapContainer} />
-    <Route path="menuAnd" component={MenuContainer} />
     <Route path="news" component={News} />
-    <Route path="events" component={Events} />
-    {/* <Route path="testing" component={testing} /> */}
-    <Route path="login" component={Login} />
     <Route path="signup" component={Signup} />
     <Route path="auth" component={Auth} />
-    <Route path="congress" component={CongressContainer} />
-    <Route path="top20" component={Top20} />
     <Route path="header" component={HeaderContainer} />
     <Route path="directory" component={home} />
     <Route path="*" component={PageNotFound} />

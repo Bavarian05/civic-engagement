@@ -33,7 +33,6 @@ class Landing extends Component {
   }
 
   onInputChange(event) {
-    console.log(event.target.value);
     this.setState({ input: event.target.value });
   }
 
@@ -53,12 +52,12 @@ class Landing extends Component {
   render() {
     return (
       <Article scrollStep={false}>
-        <Header size="small" float={false} fixed={true}>
+        {/* <Header size="small" float={false} fixed={true}>
           <Box direction="row" align="center" pad={{ between: "small" }} className="landing-login-header">
             <Button label="Login" href="/login" path="login" />
             <Button label="Sign Up" href="/signup" path="signup" />
           </Box>
-        </Header>
+        </Header> */}
 
         <Header className="landing-main-nav" size="small" float={false} fixed={true}>
           <HeaderContainer />
@@ -67,7 +66,7 @@ class Landing extends Component {
         <Hero className="landing-hero" background={<Image src={'../media/landing.jpg'} fit="cover" full={true} />}>
           <Box align="center" justify="center" full="horizontal">
             <Headline align="center">
-              Your personal politics agency
+              One stop shop of civic and politics
             </Headline>
             <Box align="center" justify="center" pad={{ between: 'medium' }}>
               <Button
@@ -97,7 +96,7 @@ class Landing extends Component {
 
         <Section align="center" justify="center" colorIndex="grey-4-a" size="full" className="landing-panel2">
           <Headline align="center" size="small">
-            We can’t change the country without changing our state—and we can’t change our state without changing our towns and cities. CivicsPortal is today’s soapbox meant to help you both speak up in and listen to your communitites. Sign up, and make local politics sexy again.
+            We can’t change the country without changing our state—and we can’t change our state without changing our towns and cities. CivicsPortal is today’s soapbox meant to help you both speak up in and listen to your communitites.
           </Headline>
         </Section>
         <Section align="center" justify="center" colorIndex="neutral-1-a" size="full" className="landing-team">

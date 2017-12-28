@@ -12,7 +12,8 @@ class HeaderView extends Component {
       });
 
       return (
-        <div className="header" style={{ width: '1176px', paddingTop: '25px' }}>
+        // <div className="header" style={{ width: '1176px', paddingTop: '25px' }}>
+        <div className="header" >
           {header}
         </div>
       );

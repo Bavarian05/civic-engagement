@@ -12,80 +12,47 @@ class EventListComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log('In MeetupEvenList Component Did Update');
+    const { InfoWindow: { currentEvent, showInfoWindow } } = this.props;
+    const prevId = prevProps.InfoWindow.currentEvent.id;
 
-    const old = prevProps.InfoWindow.current_event.id;
-
-    const current = this.props.InfoWindow.current_event.id;
-
-    if (old === current && !this.props.InfoWindow.showInfoWindow) { return; }
-
+    if (prevId === currentEvent.id && !showInfoWindow) { return; }
+    // Scrolls to list item cooresponding to info window selection
     const el = document.getElementsByClassName('selected');
-    console.log(el);
-
     el[0].scrollIntoView({ block: 'end', behavior: 'smooth' });
-
   }
 
-
   render() {
-    const { results } = this.props.events;
-    const selected = this.props.InfoWindow.current_event.id;
-    console.log('Event List Line 8   ', this.props);
+    const { events, InfoWindow } = this.props;
+    const { results } = events;
+    const { currentEvent, showInfoWindow } = InfoWindow;
     let eventList = [];
+
     if (results) {
       eventList = results.map((event, index) => {
+        const { name, id } = event;
         const styling = {
           backgroundColor: 'red'
         };
-        if (event.id === selected && this.props.InfoWindow.showInfoWindow) {
-          return (
-            <AccordionPanel
-              heading={event.name}
-              key={event.id}
-              className="selected"
-              style={styling}
-            >
-              <ListItem
-                key={event.id}
-                event={event}
-                index={index}
-                style={styling}
-                id="selected"
-              />
+
+        return id === currentEvent.id && showInfoWindow
+        ? (
+            <AccordionPanel heading={name} key={id} className="selected" style={styling}>
+              <ListItem key={id} event={event} index={index} style={styling} id="selected" />
+            </AccordionPanel>
+          )
+        :
+          (
+            <AccordionPanel heading={name} key={id} >
+              <ListItem key={id} event={event} index={index} />
             </AccordionPanel>
           );
-        }
-        return (
-          <AccordionPanel
-            heading={event.name}
-            key={event.id}
-          >
-            <ListItem
-              key={event.id}
-              event={event}
-              index={index}
-            />
-          </AccordionPanel>
-        );
       });
     }
 
-    // return (
-    //   <div className="meetup-events-list">
-    //     {eventList}
-    //   </div>
-    // );
-
     return (
-      // <div className="meetup-events-list">
-      <Accordion
-        className="meetup-events-list"
-        openMulti={false}
-      >
+      <Accordion className="meetup-events-list" openMulti={false} >
         {eventList}
       </Accordion>
-      // </div>
     );
   }
 }

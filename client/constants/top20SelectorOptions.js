@@ -12,7 +12,6 @@ export const categories = [
   ['end-cash', 'end_cash', 'End Cash', 'Remaining Cash'],
   ['individual-total', 'total_from_individuals', 'Individual Total', 'Individual Donations'],
   ['pac-total', 'total_from_pacs', 'PAC Total', 'Contributions from PACs'],
-  // ['receipts-total', 'Receipts Total'],
   ['refund-total', 'total_refunds', 'Refund Total', 'Refund Total']
 ];
 

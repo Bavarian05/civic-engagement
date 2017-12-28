@@ -12,7 +12,7 @@ const Top20Wrapper = () =>
       <Header className="landing-main-nav" size="small" float={false} fixed={true}>
         <HeaderContainer />
       </Header>
-      <Header className="top20-header header" size="small" >
+      <Header className="top20-header" size="small" >
         <Title>
           Campaign Finance Top 20 Lists
         </Title>

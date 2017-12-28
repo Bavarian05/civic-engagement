@@ -32,7 +32,6 @@ const options = {};
 
 const Top20Chart = (props) => {
   const metric = props.search;
-  // console.log('---- In Top20Chart, props.search = ', props.search);
 
   dataSet.labels = props.data.map(
     (candidate, index) => `${index + 1}. ${candidate.name}`

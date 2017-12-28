@@ -4,11 +4,17 @@ import { bindActionCreators } from 'redux';
 import { GoogleMapLoader, GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import { toggleInfoWindow, closeInfoWindow } from '../../actions/meetupMapActions';
 
+const resolveLatLng = (eventObj, type) => {
+  const { venue, group } = eventObj;
+  const dimension = type.toLowerCase() === 'lat' ? 'lat' : 'lon';
+  return venue && venue[dimension] ? venue[dimension] : group[`group_${dimension}`];
+};
+
 class MapContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      defaultCenter: {
+      defaultCenter: { // Default is Manhattan, NY
         lat: 40.746275,
         lng: -73.988249
       },
@@ -17,10 +23,9 @@ class MapContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log('In Component Did Update');
-    const old = JSON.stringify(prevProps.Events);
+    const prev = JSON.stringify(prevProps.Events);
     const current = JSON.stringify(this.props.Events);
-    if (old === current) { return; }
+    if (prev === current) { return; }
     this._fitTheBounds();
   }
 
@@ -29,70 +34,69 @@ class MapContainer extends Component {
     const results = this.props.Events;
     const map = this.map;
     results.forEach((event) => {
-      let vLat = event.venue ? event.venue.lat || event.group.group_lat : event.group.group_lat;
-      let vLng = event.venue ? event.venue.lon || event.group.group_lon : event.group.group_lon;
-      vLat = Number(vLat);
-      vLng = Number(vLng);
+      const vLat = Number(resolveLatLng(event, 'lat'));
+      const vLng = Number(resolveLatLng(event, 'lon'));
       bounds.extend(new window.google.maps.LatLng(vLat, vLng));
     });
     map.fitBounds(bounds);
     map.panToBounds(bounds);
     const currentZoom = map.getZoom();
-    if (currentZoom > 15) {
+    if (currentZoom > 15) { // For cases where user is zoomed out too far to see results
       map.setZoom(15);
-      setTimeout(() => {
-        this.setState({ defaultZoom: 15 });
-      }, 100);
     }
   }
 
   render() {
-    const results = this.props.Events;
+    const { Events, toggleInfoWindow, closeInfoWindow, InfoWindow: InfoWindowProps } = this.props;
     let markers = [];
-    if (results) {
-      markers = results.map((event, index) => {
-        const vLat = event.venue ? event.venue.lat || event.group.group_lat : event.group.group_lat;
-        const vLng = event.venue ? event.venue.lon || event.group.group_lon : event.group.group_lon;
+
+    if (Events) {
+      markers = Events.map((event, index) => {
+        const vLat = resolveLatLng(event, 'lat');
+        const vLng = resolveLatLng(event, 'lon');
         return (
           <Marker
             position={{ lat: vLat, lng: vLng }}
             key={event.id}
             index={index}
-            onClick={this.props.toggleInfoWindow.bind(this, event)}
+            onClick={toggleInfoWindow.bind(this, event)}
           />
         );
       });
     }
+
+    const { showInfoWindow, windowPosition, currentEvent } = InfoWindowProps;
+
+    const gMapsEl = (
+      <GoogleMap
+        ref={(comp) => { this.map = comp; }}
+        defaultZoom={this.state.defaultZoom}
+        defaultCenter={this.state.defaultCenter}
+      >
+        { markers }
+        {
+          showInfoWindow &&
+          <InfoWindow
+            position={windowPosition}
+            onCloseclick={closeInfoWindow}
+            options={{ pixelOffset: new window.google.maps.Size(0, -30) }}
+          >
+            {
+              `<h2>${currentEvent.name}</h2>
+              <h4>Hosted By: ${currentEvent.group.name}</h4>
+              <h4>When: ${new Date(currentEvent.time)}</h4>
+              <p>${currentEvent.description}</p>`
+            }
+          </InfoWindow>
+        }
+      </GoogleMap>
+    );
+
     return (
       <section className="meetup-map" style={{ height: '100%', width: '100%' }}>
         <GoogleMapLoader
-          containerElement={
-            <div style={{ height: '100%' }} />
-          }
-          googleMapElement={
-            <GoogleMap
-              ref={(comp) => { this.map = comp; }}
-              defaultZoom={this.state.defaultZoom}
-              defaultCenter={this.state.defaultCenter}
-            >
-              { markers }
-              {
-                this.props.InfoWindow.showInfoWindow &&
-                <InfoWindow
-                  position={this.props.InfoWindow.windowPosition}
-                  onCloseclick={this.props.closeInfoWindow}
-                  options={{ pixelOffset: new window.google.maps.Size(0, -30) }}
-                >
-                  {
-                    `<h2>${this.props.InfoWindow.current_event.name}</h2>
-                    <h4>Hosted By: ${this.props.InfoWindow.current_event.group.name}</h4>
-                    <h4>When: ${new Date(this.props.InfoWindow.current_event.time)}</h4>
-                    <p>${this.props.InfoWindow.current_event.description}</p>`
-                  }
-                </InfoWindow>
-              }
-            </GoogleMap>
-          }
+          containerElement={<div style={{ height: '100%' }} />}
+          googleMapElement={gMapsEl}
         />
       </section>
     );
@@ -100,17 +104,13 @@ class MapContainer extends Component {
 }
 
 MapContainer.propTypes = {
-  // Events: PropTypes.arrayOf(PropTypes.object),
   toggleInfoWindow: PropTypes.func,
-  closeInfoWindow: PropTypes.func,
-  InfoWindow: PropTypes.objectOf(PropTypes.object)
+  closeInfoWindow: PropTypes.func
 };
 
 MapContainer.defaultProps = {
-  // Events: 'n/a',
   toggleInfoWindow: 'n/a',
-  closeInfoWindow: 'n/a',
-  InfoWindow: 'n/a'
+  closeInfoWindow: 'n/a'
 };
 
 function mapStateToProps(state) {

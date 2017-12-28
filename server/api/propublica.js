@@ -12,7 +12,6 @@ const headers = {
 const BASE_URL = 'https://api.propublica.org/congress/v1';
 
 const propublica = {
-
   memberList: (req, res) => {
     const chamber = req.params.chamber;
     const url = `${BASE_URL}/${SESSION}/${chamber}/members.json`;

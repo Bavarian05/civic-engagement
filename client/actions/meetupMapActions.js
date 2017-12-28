@@ -8,7 +8,7 @@ export function toggleInfoWindow(event, loc) {
       lng: loc.latLng.lng()
     };
     update = {
-      current_event: event,
+      currentEvent: event,
       windowPosition: markerLoc,
       showInfoWindow: true
     };
