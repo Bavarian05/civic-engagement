@@ -9,7 +9,7 @@ import HeaderContainer from '../../containers/headerContainer';
 const Top20Wrapper = () =>
   (
     <div className="top20-main">
-      <Header className="landing-main-nav" size="small" float={false} fixed={true}>
+      <Header className="landing-main-nav" size="small" float={false} fixed={false}>
         <HeaderContainer />
       </Header>
       <Header className="top20-header" size="small" >

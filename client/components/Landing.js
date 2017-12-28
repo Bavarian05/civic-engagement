@@ -59,7 +59,7 @@ class Landing extends Component {
         <Hero className="landing-hero" background={<Image src={'../media/landing.jpg'} fit="cover" full={true} />}>
           <Box align="center" justify="center" full="horizontal">
             <Headline align="center">
-              One stop shop of civic and politics
+              One stop shop for civics and politics
             </Headline>
             <Box align="center" justify="center" pad={{ between: 'medium' }}>
               <Button
