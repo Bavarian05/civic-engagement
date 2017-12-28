@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, hashHistory } from 'react-router';
+import { Link } from 'react-router';
 import Radium from 'radium';
 
 const style = {
@@ -30,20 +30,18 @@ const style = {
   }
 };
 
-class HeaderIconView extends React.Component {
-  //
-  render() {
-    return (
-      <div style={style}>
-        <Link to={this.props.route}>
-          <img style={{ height:'70px', width: '70px' }} src={this.props.url} />
-          <br />
-          {this.props.description}
-        </Link>
-      </div>
-    );
-  }
-}
+const HeaderIconView = (props) => {
+  const { route, url, description } = props;
 
+  return (
+    <div style={style}>
+      <Link to={route}>
+        <img alt="" style={{ height: '70px', width: '70px' }} src={url} />
+        <br />
+        {description}
+      </Link>
+    </div>
+  );
+};
 
 export default Radium(HeaderIconView);

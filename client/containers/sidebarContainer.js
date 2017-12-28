@@ -19,12 +19,3 @@ class SidebarContainer extends React.Component {
 }
 
 export default SidebarContainer;
-
-
-// <div id="outer-container">
-//   <header className="header-bar"></header>
-//   <Menu pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" } noOverlay />
-//   <main id="page-wrap">
-//     // Other stuff
-//   </main>
-// </div
